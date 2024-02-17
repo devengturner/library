@@ -22,7 +22,7 @@ const totalPagesEl = document.querySelector(".total-pages");
 totalBooksEl.textContent = "Total books: 0";
 totalReadEl.textContent = "Total read: 0";
 totalUnreadEl.textContent = "Total unread: 0";
-totalPagesEl.textContent = "total pages: 0";
+totalPagesEl.textContent = "total pages read: 0";
 
 addButton.addEventListener("click", function () {
   dialog.showModal();
@@ -35,7 +35,7 @@ closeButton.addEventListener("click", function () {
 submitButton.addEventListener("click", function () {
   let title = titleText.value;
   let author = authorText.value;
-  let pages = pagesText.value;
+  let pages = +pagesText.value;
 
   const newBook = new Book(title, author, pages);
   addBookToLibrary(newBook);
@@ -47,8 +47,6 @@ submitButton.addEventListener("click", function () {
   readCheckBox.checked = false;
 
   numberOfBooks++;
-  totalPages += +pages;
-  totalPagesEl.textContent = "Total pages: " + totalPages;
 });
 
 function Book(title, author, numberOfPages) {
@@ -68,50 +66,54 @@ function displayBook(title, author, pages) {
   const pagesElement = document.createElement("p");
   const removeButton = document.createElement("button");
   const readButton = document.createElement("button");
-  const removeText = document.createTextNode("Remove");
+  const buttonContainer = document.createElement("div");
+
+  titleElement.textContent = title;
+  authorElement.textContent = author;
+  pagesElement.textContent = pages;
 
   pagesElement.style.marginBottom = "25px";
   readButton.textContent = "Read";
 
-  removeButton.appendChild(removeText);
+  removeButton.textContent = "Remove";
 
   removeButton.addEventListener("click", function () {
     bookElement.remove();
     totalBooks--;
     if (bookElement.classList.contains("read")) {
       totalRead--;
+      totalPages = totalPages - pages;
     } else {
       totalUnread--;
     }
-    totalPages = totalPages - pages;
 
     totalBooksEl.textContent = "Total books: " + totalBooks;
     totalReadEl.textContent = "Total read: " + totalRead;
     totalUnreadEl.textContent = "Total unread: " + totalUnread;
-    totalPagesEl.textContent = "Total pages: " + totalPages;
+    totalPagesEl.textContent = "Total pages read: " + totalPages;
   });
 
   readButton.addEventListener("click", function () {
     if (bookElement.classList.contains("read")) {
       totalRead--;
       totalUnread++;
+      totalPages -= pages;
       totalReadEl.textContent = "Total read: " + totalRead;
       totalUnreadEl.textContent = "Total unread: " + totalUnread;
+      totalPagesEl.textContent = "Total pages read: " + totalPages;
     } else {
       totalUnread--;
       totalRead++;
+      totalPages += pages;
       totalUnreadEl.textContent = "Total unread: " + totalUnread;
       totalReadEl.textContent = "Total read: " + totalRead;
+      totalPagesEl.textContent = "Total pages read: " + totalPages;
     }
 
     readButton.textContent =
       readButton.textContent == "Read" ? "Unread" : "Read";
     bookElement.classList.toggle("read");
   });
-
-  titleElement.textContent = title;
-  authorElement.textContent = author;
-  pagesElement.textContent = pages;
 
   if (readCheckBox.checked) {
     bookElement.classList.add("read");
@@ -120,6 +122,8 @@ function displayBook(title, author, pages) {
     totalBooks++;
     totalReadEl.textContent = "Total read: " + totalRead;
     totalBooksEl.textContent = "Total books: " + totalBooks;
+    totalPages += pages;
+    totalPagesEl.textContent = "Total pages read: " + totalPages;
   } else {
     bookElement.classList.add("unread");
     readButton.textContent = "Read";
@@ -129,12 +133,25 @@ function displayBook(title, author, pages) {
     totalBooksEl.textContent = "Total books: " + totalBooks;
   }
 
+  buttonContainer.appendChild(readButton);
+  buttonContainer.appendChild(removeButton);
+  buttonContainer.style.display = "flex";
+  buttonContainer.style.gap = "20px";
+  buttonContainer.style.alignContent = "flex-end";
+  buttonContainer.style.justifyContent = "center";
+
+  buttonContainer.style.marginTop = "auto";
+
   bookElement.appendChild(titleElement);
   bookElement.appendChild(authorElement);
   bookElement.appendChild(pagesElement);
-  bookElement.appendChild(removeButton);
-  bookElement.appendChild(readButton);
+  bookElement.appendChild(buttonContainer);
   bookElement.classList.add("book");
+
+  bookElement.style.display = "flex";
+  bookElement.style.flexDirection = "column";
+  readButton.style.alignSelf = "bottom";
+  removeButton.style.alignSelf = "bottom";
 
   library.appendChild(bookElement);
 }

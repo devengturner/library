@@ -65,11 +65,12 @@ label {
 }
 
 .book {
-  height: 275px;
-  width: 200px;
+  height: 350px;
+  width: 250px;
   border: 1px solid #000;
   text-align: center;
   background-color: #fad1d0;
+  word-wrap: break-word;
 }
 
 dialog {
