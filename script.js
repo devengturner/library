@@ -19,6 +19,11 @@ const totalReadEl = document.querySelector(".total-read");
 const totalUnreadEl = document.querySelector(".total-unread");
 const totalPagesEl = document.querySelector(".total-pages");
 
+totalBooksEl.textContent = "Total books: 0";
+totalReadEl.textContent = "Total read: 0";
+totalUnreadEl.textContent = "Total unread: 0";
+totalPagesEl.textContent = "total pages: 0";
+
 addButton.addEventListener("click", function () {
   dialog.showModal();
 });
