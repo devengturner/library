@@ -12,6 +12,17 @@ body {
   color: #aaa;
 }
 
+main {
+  display: flex;
+  gap: 30px;
+  justify-content: start;
+}
+
+.log {
+  margin-right: 30px;
+  padding-top: 15px;
+}
+
 header {
   display: flex;
   justify-content: space-between;
@@ -39,6 +50,9 @@ button {
   height: 86vh;
   gap: 20px;
   padding: 25px 25px;
+  background-color: #f4f4f4;
+
+  flex: 8;
 }
 
 label {
